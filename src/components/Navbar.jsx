@@ -1,51 +1,39 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next'; // <-- Hook အသစ်ကို import လုပ်ပါ
+import { motion } from 'framer-motion';
 import logoImg from '../assets/logo.png';
 
 function Navbar({ openMenu }) {
-  const { t, i18n } = useTranslation(); // <-- Hook ကိုသုံးပါ
-
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
-
   return (
-    <nav className="bg-white/90 shadow-md sticky top-0 z-40 backdrop-blur-md">
-      <div className="container mx-auto px-6">
-        <div className="flex justify-between items-center py-3">
+    <div className="fixed top-4 left-0 right-0 z-40 flex justify-center">
+      <nav className="w-full max-w-6xl mx-4 bg-white/60 backdrop-blur-lg rounded-full shadow-lg border border-white/20">
+        <div className="flex justify-between items-center px-6 py-2">
+          {/* Circular Logo */}
           <Link to="/">
-            <img src={logoImg} alt="Royal Myanmar Travels Logo" className="h-10 w-auto" />
+            <motion.img 
+              src={logoImg} 
+              alt="Royal Myanmar Travels Logo" 
+              className="h-10 w-10 rounded-full object-cover filter drop-shadow-md transition-all duration-300 hover:drop-shadow-xl"
+              whileHover={{ scale: 1.05 }}
+            />
           </Link>
-
-          <div className="flex items-center">
-            {/* Language Switcher */}
-            <div className="hidden md:flex items-center space-x-2 mr-6">
-              <button 
-                onClick={() => changeLanguage('en')} 
-                className={`px-2 py-1 text-sm rounded ${i18n.language === 'en' ? 'font-bold text-blue-600' : 'font-medium'}`}
-              >
-                EN
-              </button>
-              <span className="text-gray-300">|</span>
-              <button 
-                onClick={() => changeLanguage('my')} 
-                className={`px-2 py-1 text-sm rounded ${i18n.language === 'my' ? 'font-bold text-blue-600' : 'font-medium'}`}
-              >
-                မြန်မာ
-              </button>
-            </div>
-            
-            {/* Menu Button */}
-            <button onClick={openMenu} className="text-gray-800 focus:outline-none">
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-              </svg>
-            </button>
+          
+          {/* Modern Menu Button */}
+          <div className="ml-8">
+            <motion.button 
+              onClick={openMenu} 
+              className="text-gray-800 focus:outline-none w-8 h-8 flex flex-col justify-center items-center space-y-1.5 group"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <span className="block w-full h-0.5 bg-gray-800 rounded-full transition-all duration-300 group-hover:bg-blue-600"></span>
+              <span className="block w-full h-0.5 bg-gray-800 rounded-full transition-all duration-300 group-hover:bg-blue-600 group-hover:w-2/3"></span>
+              <span className="block w-full h-0.5 bg-gray-800 rounded-full transition-all duration-300 group-hover:bg-blue-600"></span>
+            </motion.button>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }
 

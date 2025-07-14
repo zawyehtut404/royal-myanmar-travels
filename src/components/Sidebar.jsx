@@ -1,73 +1,97 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes } from 'react-icons/fa';
-import { useTranslation } from 'react-i18next'; // Import the hook
+import { FaTimes, FaHome, FaUserFriends, FaCog, FaImages, FaEnvelope } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
+import logoImg from '../assets/logo.png';
+
+const navContainerVariants = {
+  open: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
+  closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } }
+};
+
+const navLinkVariants = {
+  open: { y: 0, opacity: 1, transition: { y: { stiffness: 1000, velocity: -100 } } },
+  closed: { y: 50, opacity: 0, transition: { y: { stiffness: 1000 } } }
+};
+
+const iconVariants = {
+  hover: {
+    scale: 1.2,
+    rotate: 10,
+    transition: { type: "spring", stiffness: 300, damping: 15 }
+  }
+};
 
 function Sidebar({ isOpen, closeMenu }) {
-  const { t, i18n } = useTranslation(); // Use the hook
+  const { t, i18n } = useTranslation();
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-  };
-
-  const sidebarVariants = {
-    open: { x: 0 },
-    closed: { x: "100%" },
   };
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeMenu}
-            className="fixed inset-0 bg-black bg-opacity-50 z-50"
+            className="fixed inset-0 bg-black bg-opacity-60 z-50"
           ></motion.div>
 
-          {/* Sidebar Panel */}
           <motion.div
-            initial="closed"
-            animate="open"
-            exit="closed"
-            variants={sidebarVariants}
-            transition={{ type: "tween", ease: "easeInOut", duration: 0.3 }}
-            className="fixed top-0 right-0 h-full w-72 bg-white shadow-lg z-50"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", ease: "easeInOut", duration: 0.4 }}
+            className="fixed top-0 right-0 h-full w-80 bg-gray-900/80 backdrop-blur-lg border-l border-white/10 shadow-lg z-50"
           >
             <div className="p-6 flex flex-col h-full">
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-xl font-bold">{t('navbar.home')}</h2>
-                <button onClick={closeMenu} className="text-gray-500 hover:text-gray-800">
+              <div className="flex justify-between items-center mb-10">
+                <img 
+                  src={logoImg} 
+                  alt="Logo" 
+                  className="h-10 w-10 rounded-full object-cover" 
+                />
+                <motion.button 
+                  onClick={closeMenu} 
+                  className="text-gray-400 hover:text-white"
+                  whileHover={{ scale: 1.2, rotate: 90 }}
+                >
                   <FaTimes size={24} />
-                </button>
+                </motion.button>
               </div>
               
-              {/* Navigation Links */}
-              <nav className="flex flex-col flex-grow">
-                <Link to="/" className="text-lg text-gray-700 hover:text-blue-500 hover:bg-gray-100 rounded-md py-3 px-4 transition-all" onClick={closeMenu}>{t('navbar.home')}</Link>
-                <Link to="/about" className="text-lg text-gray-700 hover:text-blue-500 hover:bg-gray-100 rounded-md py-3 px-4 transition-all" onClick={closeMenu}>{t('navbar.about')}</Link>
-                <Link to="/services" className="text-lg text-gray-700 hover:text-blue-500 hover:bg-gray-100 rounded-md py-3 px-4 transition-all" onClick={closeMenu}>{t('navbar.services')}</Link>
-                <Link to="/gallery" className="text-lg text-gray-700 hover:text-blue-500 hover:bg-gray-100 rounded-md py-3 px-4 transition-all" onClick={closeMenu}>{t('navbar.gallery')}</Link>
-                <Link to="/contact" className="text-lg text-gray-700 hover:text-blue-500 hover:bg-gray-100 rounded-md py-3 px-4 transition-all" onClick={closeMenu}>{t('navbar.contact')}</Link>
-              </nav>
+              <motion.nav 
+                className="flex flex-col space-y-2 flex-grow"
+                variants={navContainerVariants}
+                initial="closed"
+                animate="open"
+              >
+                <LinkItem to="/" icon={<FaHome />} text={t('navbar.home')} closeMenu={closeMenu} />
+                
+                <LinkItem to="/services" icon={<FaCog />} text={t('navbar.services')} closeMenu={closeMenu} />
+                <LinkItem to="/gallery" icon={<FaImages />} text={t('navbar.gallery')} closeMenu={closeMenu} />
+                <LinkItem to="/contact" icon={<FaEnvelope />} text={t('navbar.contact')} closeMenu={closeMenu} />
+                <LinkItem to="/about" icon={<FaUserFriends />} text={t('navbar.about')} closeMenu={closeMenu} />
+              </motion.nav>
 
-              {/* Language Switcher for Mobile */}
-              <div className="mt-6 border-t pt-4">
+              {/* ============== Language Switcher ============== */}
+              <div className="mt-6 border-t border-gray-700 pt-4">
                  <p className="text-sm font-semibold text-gray-500 mb-2">{t('language')}</p>
                  <div className="flex items-center space-x-2">
                     <button 
                       onClick={() => changeLanguage('en')} 
-                      className={`px-3 py-1 text-sm rounded w-full ${i18n.language === 'en' ? 'font-bold bg-blue-100 text-blue-700' : 'font-medium bg-gray-200'}`}
+                      className={`px-3 py-1.5 text-sm rounded-md w-full transition-colors ${i18n.language === 'en' ? 'font-bold bg-blue-500 text-white' : 'font-medium bg-gray-700 hover:bg-gray-600'}`}
                     >
                       English
                     </button>
                     <button 
                       onClick={() => changeLanguage('my')} 
-                      className={`px-3 py-1 text-sm rounded w-full ${i18n.language === 'my' ? 'font-bold bg-blue-100 text-blue-700' : 'font-medium bg-gray-200'}`}
+                      className={`px-3 py-1.5 text-sm rounded-md w-full transition-colors ${i18n.language === 'my' ? 'font-bold bg-blue-500 text-white' : 'font-medium bg-gray-700 hover:bg-gray-600'}`}
                     >
                       မြန်မာ
                     </button>
@@ -80,5 +104,19 @@ function Sidebar({ isOpen, closeMenu }) {
     </AnimatePresence>
   );
 }
+
+const LinkItem = ({ to, icon, text, closeMenu }) => (
+  <motion.div 
+    variants={navLinkVariants}
+    whileHover="hover"
+  >
+    <Link to={to} className="flex items-center space-x-4 text-lg text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-md py-3 px-4 transition-colors duration-200" onClick={closeMenu}>
+      <motion.span className="text-blue-400" variants={iconVariants}>
+        {icon}
+      </motion.span>
+      <span>{text}</span>
+    </Link>
+  </motion.div>
+);
 
 export default Sidebar;
