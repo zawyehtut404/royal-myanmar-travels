@@ -2,9 +2,13 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { tourPackages } from '../data/tours';
 
 function ServicesPage() {
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
+
   return (
     <>
       <Helmet>
@@ -28,15 +32,15 @@ function ServicesPage() {
               {tourPackages.map((tour) => (
                 <motion.div
                   key={tour.id}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden"
+                  className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col"
                   whileHover={{ y: -10, scale: 1.03 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <img src={tour.image} alt={tour.name} className="w-full h-56 object-cover" />
-                  <div className="p-6">
-                    <p className="text-sm text-gray-500 mb-1">{tour.duration}</p>
-                    <h3 className="text-xl font-semibold mb-2">{tour.name}</h3>
-                    <p className="text-gray-700 mb-4 h-20">{tour.description}</p>
+                  <img src={tour.image} alt={tour.name[lang]} className="w-full h-56 object-cover" />
+                  <div className="p-6 flex flex-col flex-grow">
+                    <p className="text-sm text-gray-500 mb-1">{tour.duration[lang]}</p>
+                    <h3 className="text-xl font-semibold mb-2">{tour.name[lang]}</h3>
+                    <p className="text-gray-700 mb-4 flex-grow">{tour.description[lang]}</p>
                     <div className="flex justify-between items-center mt-4">
                       <span className="text-2xl font-bold text-blue-600">{tour.price}</span>
                       <Link

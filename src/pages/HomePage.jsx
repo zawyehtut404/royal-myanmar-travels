@@ -11,7 +11,9 @@ import heroBg from '../assets/hero-bg.jpg';
 
 function HomePage() {
   const { t, i18n } = useTranslation();
+  const lang = i18n.language;
   const featuredTours = tourPackages.slice(0, 3);
+  
   const testimonials = [
     { id: 1, quote: "An absolutely unforgettable experience! The guides were knowledgeable and friendly. Royal Myanmar Travels made our trip seamless and magical.", name: "John & Jane Doe", origin: "USA" },
     { id: 2, quote: "I highly recommend their services. The tour was well-organized, and we got to see the authentic side of Myanmar. Excellent value for money.", name: "Emily White", origin: "United Kingdom" },
@@ -26,20 +28,14 @@ function HomePage() {
       </Helmet>
       <div className="bg-white text-gray-800">
         {/* Hero Section */}
-        <div
-          className="relative h-screen flex items-center justify-center bg-cover bg-center text-white"
-          style={{ backgroundImage: `url(${heroBg})` }}
-        >
+        <div className="relative h-screen flex items-center justify-center bg-cover bg-center text-white" style={{ backgroundImage: `url(${heroBg})` }}>
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="relative z-10 text-center px-4">
-            <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 whitespace-pre-line ${i18n.language === 'my' ? 'font-padauk' : ''}`}>
+            <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4 whitespace-pre-line ${lang === 'my' ? 'font-padauk' : ''}`}>
               {t('home.welcome')}
             </h1>
             <p className="text-lg md:text-xl mb-8">{t('home.tagline')}</p>
-            <a
-              href="#tours"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform hover:scale-105"
-            >
+            <a href="#tours" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform hover:scale-105">
               {t('home.explore_button')}
             </a>
           </div>
@@ -52,14 +48,16 @@ function HomePage() {
             <p className="text-center text-gray-600 mb-12">{t('home.featured_tours_subtitle')}</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredTours.map((tour, index) => (
-                <motion.div key={tour.id} className="bg-white rounded-lg shadow-lg overflow-hidden" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.2 }} viewport={{ once: true }}>
-                  <img src={tour.image} alt={tour.name} className="w-full h-56 object-cover" />
+                <motion.div key={tour.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.2 }} viewport={{ once: true }}>
+                  <img src={tour.image} alt={tour.name[lang]} className="w-full h-56 object-cover" />
                   <div className="p-6 flex flex-col flex-grow">
-                    <h3 className="text-xl font-semibold mb-2">{tour.name}</h3>
-                    <p className="text-gray-700 mb-4 flex-grow">{tour.description}</p>
+                    <h3 className="text-xl font-semibold mb-2">{tour.name[lang]}</h3>
+                    <p className="text-gray-700 mb-4 flex-grow">{tour.description[lang]}</p>
                     <div className="flex justify-between items-center mt-4">
                       <span className="text-2xl font-bold text-blue-600">{tour.price}</span>
-                      <Link to={`/services/${tour.slug}`} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors duration-300">View Details</Link>
+                      <Link to={`/services/${tour.slug}`} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
+                        View Details
+                      </Link>
                     </div>
                   </div>
                 </motion.div>
