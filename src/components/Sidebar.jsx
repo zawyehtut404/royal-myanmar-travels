@@ -72,26 +72,25 @@ function Sidebar({ isOpen, closeMenu }) {
                 animate="open"
               >
                 <LinkItem to="/" icon={<FaHome />} text={t('navbar.home')} closeMenu={closeMenu} />
-                
+                <LinkItem to="/about" icon={<FaUserFriends />} text={t('navbar.about')} closeMenu={closeMenu} />
                 <LinkItem to="/services" icon={<FaCog />} text={t('navbar.services')} closeMenu={closeMenu} />
                 <LinkItem to="/gallery" icon={<FaImages />} text={t('navbar.gallery')} closeMenu={closeMenu} />
                 <LinkItem to="/contact" icon={<FaEnvelope />} text={t('navbar.contact')} closeMenu={closeMenu} />
-                <LinkItem to="/about" icon={<FaUserFriends />} text={t('navbar.about')} closeMenu={closeMenu} />
               </motion.nav>
 
-              {/* ============== Language Switcher ============== */}
+              {/* Language Switcher with the fix */}
               <div className="mt-6 border-t border-gray-700 pt-4">
                  <p className="text-sm font-semibold text-gray-500 mb-2">{t('language')}</p>
                  <div className="flex items-center space-x-2">
                     <button 
                       onClick={() => changeLanguage('en')} 
-                      className={`px-3 py-1.5 text-sm rounded-md w-full transition-colors ${i18n.language === 'en' ? 'font-bold bg-blue-500 text-white' : 'font-medium bg-gray-700 hover:bg-gray-600'}`}
+                      className={`px-3 py-1.5 text-sm rounded-md w-full transition-colors ${i18n.language.startsWith('en') ? 'font-bold bg-blue-500 text-white' : 'font-medium bg-gray-700 hover:bg-gray-600'}`}
                     >
                       English
                     </button>
                     <button 
                       onClick={() => changeLanguage('my')} 
-                      className={`px-3 py-1.5 text-sm rounded-md w-full transition-colors ${i18n.language === 'my' ? 'font-bold bg-blue-500 text-white' : 'font-medium bg-gray-700 hover:bg-gray-600'}`}
+                      className={`px-3 py-1.5 text-sm rounded-md w-full transition-colors ${i18n.language.startsWith('my') ? 'font-bold bg-blue-500 text-white' : 'font-medium bg-gray-700 hover:bg-gray-600'}`}
                     >
                       မြန်မာ
                     </button>
