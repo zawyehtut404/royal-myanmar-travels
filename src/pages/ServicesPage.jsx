@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { tourPackages } from '../data/tours';
+import Loading from '../components/Loading';
 
 function ServicesPage() {
-  const { i18n } = useTranslation();
+  const { t, i18n, ready } = useTranslation();
   const lang = i18n.language;
+
+  // Since we are using local data now, we don't need to fetch
+  // but we still need to wait for i18n to be ready
+  if (!ready) {
+    return <div className="w-full h-screen flex justify-center items-center"><Loading /></div>;
+  }
 
   return (
     <>
@@ -17,7 +24,6 @@ function ServicesPage() {
       </Helmet>
       
       <div className="bg-white">
-        {/* Page Header */}
         <section className="bg-gray-100 py-16 text-center">
           <div className="container mx-auto px-6">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900">Our Tour Packages</h1>
@@ -25,7 +31,6 @@ function ServicesPage() {
           </div>
         </section>
 
-        {/* Tour Packages Grid */}
         <section className="py-20">
           <div className="container mx-auto px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -36,11 +41,11 @@ function ServicesPage() {
                   whileHover={{ y: -10, scale: 1.03 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <img src={tour.image} alt={tour.name[lang]} className="w-full h-56 object-cover" />
+                  <img src={tour.image} alt={tour.name[lang] || tour.name.en} className="w-full h-56 object-cover" />
                   <div className="p-6 flex flex-col flex-grow">
-                    <p className="text-sm text-gray-500 mb-1">{tour.duration[lang]}</p>
-                    <h3 className="text-xl font-semibold mb-2">{tour.name[lang]}</h3>
-                    <p className="text-gray-700 mb-4 flex-grow">{tour.description[lang]}</p>
+                    <p className="text-sm text-gray-500 mb-1">{tour.duration[lang] || tour.duration.en}</p>
+                    <h3 className="text-xl font-semibold mb-2">{tour.name[lang] || tour.name.en}</h3>
+                    <p className="text-gray-700 mb-4 flex-grow">{tour.description[lang] || tour.description.en}</p>
                     <div className="flex justify-between items-center mt-4">
                       <span className="text-2xl font-bold text-blue-600">{tour.price}</span>
                       <Link

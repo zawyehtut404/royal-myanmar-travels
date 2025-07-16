@@ -7,10 +7,11 @@ import { FaMapMarkedAlt, FaPlaneDeparture, FaSmileBeam } from 'react-icons/fa';
 
 import { tourPackages } from '../data/tours';
 import Counter from '../components/Counter';
+import Loading from '../components/Loading';
 import heroBg from '../assets/hero-bg.jpg';
 
 function HomePage() {
-  const { t, i18n } = useTranslation();
+  const { t, i18n, ready } = useTranslation();
   const lang = i18n.language;
   const featuredTours = tourPackages.slice(0, 3);
   
@@ -20,6 +21,10 @@ function HomePage() {
     { id: 3, quote: "From booking to the final day of our tour, everything was perfect. The team was professional and attentive to all our needs. Thank you!", name: "Kenji Tanaka", origin: "Japan" },
   ];
 
+  if (!ready) {
+    return <div className="w-full h-screen flex justify-center items-center"><Loading /></div>;
+  }
+
   return (
     <>
       <Helmet>
@@ -27,7 +32,6 @@ function HomePage() {
         <meta name="description" content={t('home.tagline')} />
       </Helmet>
       <div className="bg-white text-gray-800">
-        {/* Hero Section */}
         <div className="relative h-screen flex items-center justify-center bg-cover bg-center text-white" style={{ backgroundImage: `url(${heroBg})` }}>
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="relative z-10 text-center px-4">
@@ -41,7 +45,6 @@ function HomePage() {
           </div>
         </div>
 
-        {/* Featured Tours Section */}
         <section id="tours" className="py-20 bg-gray-50">
           <div className="container mx-auto px-6">
             <h2 className="text-3xl font-bold text-center mb-2">{t('home.featured_tours_title')}</h2>
@@ -51,8 +54,8 @@ function HomePage() {
                 <motion.div key={tour.id} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.2 }} viewport={{ once: true }}>
                   <img src={tour.image} alt={tour.name[lang]} className="w-full h-56 object-cover" />
                   <div className="p-6 flex flex-col flex-grow">
-                    <h3 className="text-xl font-semibold mb-2">{tour.name[lang]}</h3>
-                    <p className="text-gray-700 mb-4 flex-grow">{tour.description[lang]}</p>
+                    <h3 className="text-xl font-semibold mb-2">{tour.name[lang] || tour.name.en}</h3>
+                    <p className="text-gray-700 mb-4 flex-grow">{tour.description[lang] || tour.description.en}</p>
                     <div className="flex justify-between items-center mt-4">
                       <span className="text-2xl font-bold text-blue-600">{tour.price}</span>
                       <Link to={`/services/${tour.slug}`} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
@@ -66,7 +69,6 @@ function HomePage() {
           </div>
         </section>
 
-        {/* Stats Counter Section */}
         <section className="py-20 bg-blue-600 text-white">
           <div className="container mx-auto px-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
@@ -89,7 +91,6 @@ function HomePage() {
           </div>
         </section>
 
-        {/* Testimonials Section */}
         <section className="py-20 bg-white">
           <div className="container mx-auto px-6">
             <h2 className="text-3xl font-bold text-center mb-12">{t('home.testimonials_title')}</h2>
@@ -107,7 +108,6 @@ function HomePage() {
           </div>
         </section>
       
-        {/* Call to Action Section */}
         <section className="py-20 bg-blue-600">
           <div className="container mx-auto px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t('home.cta_title')}</h2>
