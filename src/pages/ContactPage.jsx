@@ -22,7 +22,7 @@ function ContactPage() {
     const formData = new FormData(form);
 
     fetch(FORMSPREE_URL, {
-      method: 'POST',
+      method: "POST",
       body: formData,
       headers: {
         'Accept': 'application/json'
@@ -59,8 +59,63 @@ function ContactPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="bg-gray-50 p-8 rounded-lg shadow-md">
               <form onSubmit={handleSubmit}>
-                {/* ... all your input fields (name, email, subject, message) remain the same ... */}
-                <div className="mb-4">...</div>
+                {/* Name */}
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2" htmlFor="name">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    placeholder="Your Name"
+                  />
+                </div>
+                {/* Email */}
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    placeholder="you@example.com"
+                  />
+                </div>
+                {/* Subject */}
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2" htmlFor="subject">
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    required
+                    defaultValue={initialSubject}
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    placeholder="Subject"
+                  />
+                </div>
+                {/* Message */}
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-bold mb-2" htmlFor="message">
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows={5}
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    placeholder="Your message..."
+                  ></textarea>
+                </div>
 
                 <button
                   type="submit"
@@ -86,7 +141,15 @@ function ContactPage() {
               </form>
             </div>
             <div>
-              {/* ... Contact Info & Map ... */}
+              <div className="bg-gray-50 p-8 rounded-lg shadow-md mb-8">
+                <h3 className="text-2xl font-bold mb-4">Contact Information</h3>
+                <p className="mb-2"><strong>Address:</strong> No. 123, Main Road, Yangon, Myanmar</p>
+                <p className="mb-2"><strong>Phone:</strong> +95 9 123 456 789</p>
+                <p><strong>Email:</strong> contact@royalmyanmartravels.com</p>
+              </div>
+              <div className="rounded-lg shadow-md overflow-hidden">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.493399656111!2d96.1553595153151!3d16.80222272370608!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c1eb5d64804b25%3A0x1e360cb46c507646!2sShwedagon%20Pagoda!5e0!3m2!1sen!2smm!4v1628246473166!5m2!1sen!2smm" width="100%" height="350" style={{ border: 0 }} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+              </div>
             </div>
           </div>
         </div>
